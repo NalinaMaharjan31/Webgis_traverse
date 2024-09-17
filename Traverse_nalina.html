@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Station Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url('tt.jpg'); /* Background image */
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent repeating the background image */
+            color: black; /* Black text color for contrast */
+        }
+        header {
+            background-color: rgba(75, 0, 130, 0.8); /* Dark purple with transparency */
+            color: white;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+            border-radius: 8px;
+            margin: 20px; /* Add margin to separate from the edges */
+        }
+        footer {
+            background-color: rgba(75, 0, 130, 0.8); /* Dark purple with transparency */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold; /* Make table text bold */
+        }
+        th {
+            background-color: #D3D3D3; /* Light gray background for headers */
+        }
+        input, button {
+            padding: 8px;
+            margin-right: 10px;
+            font-weight: bold; /* Make input and button text bold */
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: bold; /* Make button text bold */
+        }
+        .delete-btn:hover {
+            background-color: darkred;
+        }
+        .calc-btn {
+            background-color: #6A0D91; /* Dark purple */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold; /* Make button text bold */
+        }
+        .calc-btn:hover {
+            background-color: #4B0082; /* Slightly darker dark purple */
+        }
+        section {
+            display: none; /* Hide all sections by default */
+        }
+        section.active {
+            display: block; /* Show active section */
+        }
+        h1, h2, h3, p {
+            font-weight: bold; /* Make section headings and paragraphs bold */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="#home" onclick="showSection('home')">Home</a></li>
+            <li><a href="#about" onclick="showSection('about')">About Us</a></li>
+            <li><a href="#contact" onclick="showSection('contact')">Contact Us</a></li>
+            <li><a href="#traverse" onclick="showSection('traverse')">Traverse Computation</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <section id="home" class="active">
+        <h1>Traverse Surveying Information</h1>
+        <p><strong>Definition:</strong> Traversing is a method of surveying in which a series of connected survey lines are measured. These lines can be used to determine boundaries, locations, and other geographical details.</p>
+        <p><strong>Types of Traversing:</strong></p>
+        <ul>
+            <li><strong>Closed Traverse:</strong> A traverse that begins and ends at the same point, forming a closed loop.</li>
+            <li><strong>Open Traverse:</strong> A traverse that does not form a closed loop and has different start and end points.</li>
+        </ul>
+        <p><strong>Methods of Traverse Surveying:</strong></p>
+        <ul>
+            <li>Chain Traversing</li>
+            <li>Chain and Compass Traversing</li>
+            <li>Transit Traversing</li>
+            <li>Plane Table Traversing</li>
+        </ul>
+    </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>We provide accurate survey station data for various applications. Learn more about our services and team here.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>For inquiries, please email us at <a href="mailto:nalinamaharjan29@gmail.com">nalinamaharjan29@gmail.com</a>.</p>
+    </section>
+
+    <section id="traverse">
+        <h2>Traverse Computation</h2>
+        <div class="container">
+            <label for="stations">Number of Stations (n): </label>
+            <input type="number" id="stations" min="1" value="1">
+        </div>
+
+        <div class="container">
+            <button onclick="addData()">Add Data</button>
+        </div>
+
+        <div class="container">
+            <button class="calc-btn" onclick="calculateAngle('interior')">Calculate Interior Angle</button>
+            <button class="calc-btn" onclick="calculateAngle('exterior')">Calculate Exterior Angle</button>
+        </div>
+
+        <div class="container">
+            <button class="calc-btn" onclick="updateBearings()">Update Bearings</button>
+        </div>
+
+        <div class="container">
+            <button class="calc-btn" onclick="calculateDepartures()">Calculate ΔE and ΔN</button>
+            <button class="calc-btn" onclick="distributeErrors()">Distribute Errors</button>
+            <button class="calc-btn" onclick="calculateEastingNorthing()">Calculate Easting & Northing</button>
+            <button class="calc-btn" onclick="calculateDeltaH()">Calculate ΔH</button>
+            <button class="calc-btn" onclick="calculateHeights()">Calculate Height</button>
+            <button class="calc-btn" onclick="calculateAccuracy()">Calculate Accuracy</button>
+        </div>
+
+        <div class="container">
+            <p><strong>Sum of Observed Angles: </strong><span id="angleSum">0</span></p>
+            <p><strong>True Value: </strong><span id="trueValue">0</span></p>
+            <p><strong>Error: </strong><span id="angleError">0</span></p>
+            <p><strong>ΔH Error: </strong><span id="deltaHError">0</span></p>
+            <p><strong>Closing Error: </strong><span id="closingError">0</span></p>
+            <p><strong>Accuracy: </strong><span id="accuracy">0</span></p>
+        </div>
+
+        <table id="stationTable">
+            <thead>
+                <tr>
+                    <th>S.N</th>
+                    <th>Station</th>
+                    <th>Observe Angle</th>
+                    <th>Corrected Angle</th>
+                    <th>Bearing</th>
+                    <th>Distance</th>
+                    <th>Departure (ΔE)</th>
+                    <th>Correction ΔE</th>
+                    <th>Corrected ΔE</th>
+                    <th>Easting</th>
+                    <th>Latitude (ΔN)</th>
+                    <th>Correction ΔN</th>
+                    <th>Corrected ΔN</th>
+                    <th>Northing</th>
+                    <th>Zenithal Angle (Z)</th>
+                    <th>Hi</th>
+                    <th>Ht</th>
+                    <th>ΔH</th>
+                    <th>Correction ΔH</th>
+                    <th>Corrected ΔH</th>
+                    <th>Height</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<footer>
+    <p>Prepared by: Nalina Maharjan &copy; 2024 Survey Station Data. All rights reserved.</p>
+</footer>
+
+<script>
+    function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // Show the selected section
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    function addData() {
+        const tableBody = document.querySelector('#stationTable tbody');
+        const rowCount = tableBody.rows.length;
+        const newRow = tableBody.insertRow();
+
+        // Add cells to the new row
+        newRow.insertCell(0).textContent = rowCount + 1; // Serial Number
+        newRow.insertCell(1).innerHTML = '<input type="text" placeholder="Station">';
+        newRow.insertCell(2).innerHTML = '<input type="text" placeholder="Observe Angle">';
+        newRow.insertCell(3).innerHTML = '<input type="text" placeholder="Corrected Angle">';
+        newRow.insertCell(4).innerHTML = '<input type="text" placeholder="Bearing">';
+        newRow.insertCell(5).innerHTML = '<input type="text" placeholder="Distance">';
+        newRow.insertCell(6).innerHTML = '<input type="text" placeholder="Departure (ΔE)">';
+        newRow.insertCell(7).innerHTML = '<input type="text" placeholder="Correction ΔE">';
+        newRow.insertCell(8).innerHTML = '<input type="text" placeholder="Corrected ΔE">';
+        newRow.insertCell(9).innerHTML = '<input type="text" placeholder="Easting">';
+        newRow.insertCell(10).innerHTML = '<input type="text" placeholder="Latitude (ΔN)">';
+        newRow.insertCell(11).innerHTML = '<input type="text" placeholder="Correction ΔN">';
+        newRow.insertCell(12).innerHTML = '<input type="text" placeholder="Corrected ΔN">';
+        newRow.insertCell(13).innerHTML = '<input type="text" placeholder="Northing">';
+        newRow.insertCell(14).innerHTML = '<input type="text" placeholder="Zenithal Angle (Z)">';
+        newRow.insertCell(15).innerHTML = '<input type="text" placeholder="Hi">';
+        newRow.insertCell(16).innerHTML = '<input type="text" placeholder="Ht">';
+        newRow.insertCell(17).innerHTML = '<input type="text" placeholder="ΔH">';
+        newRow.insertCell(18).innerHTML = '<input type="text" placeholder="Correction ΔH">';
+        newRow.insertCell(19).innerHTML = '<input type="text" placeholder="Corrected ΔH">';
+        newRow.insertCell(20).innerHTML = '<input type="text" placeholder="Height">';
+        newRow.insertCell(21).innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
+    }
+
+    function deleteRow(button) {
+        // Remove the row of the clicked delete button
+        const row = button.closest('tr');
+        row.remove();
+    }
+
+    // Implement the calculation functions (placeholders for now)
+    function calculateAngle(type) {
+        alert(type + ' Angle calculation is not implemented yet.');
+    }
+
+    function updateBearings() {
+        alert('Update Bearings functionality is not implemented yet.');
+    }
+
+    function calculateDepartures() {
+        alert('Calculate ΔE and ΔN functionality is not implemented yet.');
+    }
+
+    function distributeErrors() {
+        alert('Distribute Errors functionality is not implemented yet.');
+    }
+
+    function calculateEastingNorthing() {
+        alert('Calculate Easting & Northing functionality is not implemented yet.');
+    }
+
+    function calculateDeltaH() {
+        alert('Calculate ΔH functionality is not implemented yet.');
+    }
+
+    function calculateHeights() {
+        alert('Calculate Height functionality is not implemented yet.');
+    }
+
+    function calculateAccuracy() {
+        alert('Calculate Accuracy functionality is not implemented yet.');
+    }
+</script>
+
+</body>
+</html>
